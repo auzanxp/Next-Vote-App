@@ -1,10 +1,11 @@
 import Head from "next/head";
 import Image from "next/image";
+import {signIn} from "next-auth/react"
 import Button from "../Button";
 
 export default function RestrictedPage() {
     return (
-        <div>
+        <div className="container flex flex-col justify-center items-center h-screen space-y-5">
             <Head>
                 <title>Login dulu</title>
             </Head>
@@ -21,8 +22,7 @@ export default function RestrictedPage() {
             </h2>
             <Button
                 text="Login"
-                onClick={() => { }}
-                
+                onClick={signIn}
             />
         </div>
     )

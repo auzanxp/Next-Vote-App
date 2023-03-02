@@ -1,14 +1,16 @@
 import Head from "next/head";
 import Image from "next/image";
 import ReactDatePicker, { registerLocale } from "react-datepicker";
+import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
+import { useSession } from "next-auth/react"
 import id from "date-fns/locale/id"
 import Form from "../../components/Form";
 import Menu from "../../components/Menu";
-import { useState } from "react";
 import CandidateForm from "../../components/CandidatetForm";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import Button from "../../components/Button";
+import RestrictedPage from "../../components/Page/RestrictedPage";
 
 registerLocale("id", id);
 
@@ -16,6 +18,7 @@ export default function CreateVote() {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date())
     const [candidates, setCandidates] = useState<Candidate[]>([])
+    const { data: session } = useSession();
 
     const submitCandidate = (candidate: Candidate) => {
         setCandidates(
@@ -40,6 +43,10 @@ export default function CreateVote() {
             candidate.key = index + 1
         })
         setCandidates(newCandidate)
+    }
+
+    if (!session) {
+        return <RestrictedPage/>
     }
 
     return (

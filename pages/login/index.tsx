@@ -1,8 +1,11 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useSession, signIn, getProviders } from "next-auth/react"
+import { useRouter } from "next/router";
 
-export default function Login() {
-
+export default function Login({ providers }: any) {
+    const { data: session } = useSession();
+    const router = useRouter()
     const googleIcon = (
         <svg
             className="mr-2 -ml-1 w-4 h-4"
@@ -31,6 +34,9 @@ export default function Login() {
             ></path>
         </svg>
     );
+    if (session) {
+        router.push('/')
+    }
 
     return (
         <div className="flex flex-col items-center justify-center container h-screen m-auto">
@@ -41,12 +47,24 @@ export default function Login() {
             <Link href={'/'} className="text-6xl mb-10 font-bold">
                 Jujurly
             </Link>
-            <div className="w-1/3 ">
-                <button className="inline-flex justify-center items-center bg-white py-2 w-full border-2 border-black font-medium hover:bg-black hover:text-white">
-                    {googleIcon}
-                    Login Dengan Google
-                </button>
-            </div>
+            {Object.values(providers).map((provider: any) => (
+                <div key={provider.id} className="w-1/3 ">
+                    <button
+                        className="inline-flex justify-center items-center bg-white py-2 w-full border-2 border-black font-medium hover:bg-black hover:text-white"
+                        onClick={() => signIn(provider.id)}
+                    >
+                        {provider.name === 'Google' && googleIcon}
+                        Login Dengan {provider.name}
+                    </button>
+                </div>
+            ))}
         </div>
     )
+}
+
+export async function getServerSideProps() {
+    const providers = await getProviders();
+    return {
+        props: { providers: providers ?? [] },
+    }
 }

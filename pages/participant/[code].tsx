@@ -1,14 +1,21 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react"
 import showAlert from "../../components/Alert";
 import Button from "../../components/Button";
 import CandidateItem from "../../components/CandidatItem";
 import CountDown from "../../components/CountDown/Countdown";
 import Menu from "../../components/Menu";
+import RestrictedPage from "../../components/Page/RestrictedPage";
 
 export default function DetailParticipant() {
     const router = useRouter();
     const { code } = router.query;
+    const { data: session } = useSession();
+
+    if (!session) {
+        return <RestrictedPage/>
+    }
     return (
         <div className="container mx-auto">
             <Head>

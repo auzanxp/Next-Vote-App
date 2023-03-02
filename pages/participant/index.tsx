@@ -2,15 +2,22 @@ import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useSession } from "next-auth/react"
 import Button from "../../components/Button";
 import Form from "../../components/Form";
+import RestrictedPage from "../../components/Page/RestrictedPage";
 
 export default function Participant() {
     const router = useRouter()
     const [code, setCode] = useState('')
+    const { data: session } = useSession();
 
     const handleSubmitCode = () => {
         router.push('/participant/kode-voting')
+    }
+
+    if (!session) {
+        return <RestrictedPage/>
     }
 
     return (
