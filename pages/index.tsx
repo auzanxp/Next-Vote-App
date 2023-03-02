@@ -28,7 +28,12 @@ const Home: NextPage = () => {
             text='Buat Vote Baru'
             onClick={() => router.push('/vote/create')}
           />
-          <Button text='Ikutan Vote' type='secondary' className='text-black' />
+          <Button
+            text='Ikutan Vote'
+            type='secondary'
+            className='text-black'
+            onClick={() => router.push('/participant')}
+          />
         </div>
       </div>
       {/* </Header> */}
