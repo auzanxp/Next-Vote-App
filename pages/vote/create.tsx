@@ -11,13 +11,19 @@ import CandidateForm from "../../components/CandidatetForm";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import Button from "../../components/Button";
 import RestrictedPage from "../../components/Page/RestrictedPage";
+import showAlert from "../../components/Alert";
+import { useRouter } from "next/router";
 
 registerLocale("id", id);
 
 export default function CreateVote() {
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date())
+    const [startDateTime, setStartDateTime] = useState(new Date());
+    const [endDateTime, setEndDateTime] = useState(new Date())
     const [candidates, setCandidates] = useState<Candidate[]>([])
+    const [title, setTitle] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const router = useRouter();
     const { data: session } = useSession();
 
     const submitCandidate = (candidate: Candidate) => {
@@ -45,8 +51,69 @@ export default function CreateVote() {
         setCandidates(newCandidate)
     }
 
+    const handleSubmitVote = (e: any) => {
+        e.preventDefault();
+        //Validasi
+        if (title === "") {
+            showAlert({
+                title: "Hmmh",
+                message: "Judul tidak boleh kosong"
+            });
+            return;
+        }
+        if (candidates.length < 2) {
+            showAlert({
+                title: "Hmmh",
+                message: "Minimal ada 2 kandidat"
+            });
+            return;
+        }
+        if (startDateTime > endDateTime) {
+            showAlert({
+                title: "Hmmh",
+                message: "Tanggal mulai tidak boleh lebih besar dari tanggal selesai"
+            });
+            return;
+        }
+        if (candidates.some((c) => c.name === "")) {
+            showAlert({
+                title: "Hmmh",
+                message: "Nama kandidat tidak boleh kosong"
+            });
+            return;
+        }
+
+        setLoading(true)
+        fetch('/api/votes', {
+            method: "POST",
+            headers: {
+                "Content-Type": "aplication/json",
+            },
+            body: JSON.stringify({
+                title,
+                startDateTime,
+                endDateTime,
+                candidates,
+                publisher: session?.user?.email,
+            }),
+        })
+            .then(() => {
+                showAlert({
+                    title: "Yeay!",
+                    message: "Voting berhasil dibuat"
+                })
+                router.push("/");
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }
+
     if (!session) {
-        return <RestrictedPage/>
+        return <RestrictedPage />
     }
 
     return (
@@ -73,9 +140,9 @@ export default function CreateVote() {
                             <label className="mt-5 text-sm">Judul</label>
                             <Form
                                 className="w-1/3 mt-1"
-                                value={""}
+                                value={title}
                                 placeholder={"Contoh : Voting Calon Gubernur"}
-                                onChange={() => { }}
+                                onChange={(e) => setTitle(e)}
                             />
                         </div>
                         <div className="flex flex-col w-2/3">
@@ -84,8 +151,8 @@ export default function CreateVote() {
                                 <ReactDatePicker
                                     locale={'id'}
                                     showTimeSelect
-                                    selected={startDate}
-                                    onChange={(date) => date && setStartDate(date)}
+                                    selected={startDateTime}
+                                    onChange={(date) => date && setStartDateTime(date)}
                                     dateFormat={"Pp"}
                                     minDate={new Date()}
                                     className={"w-full bg-zinc-100 py-2 px-3"}
@@ -94,10 +161,10 @@ export default function CreateVote() {
                                 <ReactDatePicker
                                     locale={'id'}
                                     showTimeSelect
-                                    selected={endDate}
-                                    onChange={(date) => date && setEndDate(date)}
+                                    selected={endDateTime}
+                                    onChange={(date) => date && setEndDateTime(date)}
                                     dateFormat={"Pp"}
-                                    minDate={startDate}
+                                    minDate={startDateTime}
                                     className={"w-full bg-zinc-100 py-2 px-3"}
                                 />
                             </div>
@@ -126,7 +193,7 @@ export default function CreateVote() {
                     {/* </kandidat> */}
 
                     <div className="self-end mt-10">
-                        <Button text="Buat Voting" />
+                        <Button text="Buat Voting" onClick={handleSubmitVote} />
                     </div>
                 </form>
 
