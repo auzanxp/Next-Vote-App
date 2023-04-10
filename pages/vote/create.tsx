@@ -51,9 +51,8 @@ export default function CreateVote() {
         setCandidates(newCandidate)
     }
 
-    const handleSubmitVote = (e: any) => {
+    const handleSubmitVote = (e:any) => {
         e.preventDefault();
-        //Validasi
         if (title === "") {
             showAlert({
                 title: "Hmmh",
