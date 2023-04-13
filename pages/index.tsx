@@ -6,10 +6,21 @@ import Menu from '../components/Menu'
 import { LinkIcon, TrashIcon } from '@heroicons/react/24/solid'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
+import useVotes from '../lib/useVotes'
+import { useEffect, useState } from 'react'
 
 const Home: NextPage = () => {
   const router = useRouter()
   const { data: session } = useSession();
+  const { data: dataVotesApi, error, isLoading } = useVotes();
+
+  const [votes, setVotes] = useState('')
+
+  useEffect(() => {
+    if (dataVotesApi) {
+      setVotes(dataVotesApi)
+    }
+  }, [dataVotesApi])
 
   return (
     <div className='container mx-auto'>
@@ -57,22 +68,35 @@ const Home: NextPage = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className='p-5 text-left'>1</td>
-                <td className='p-5 text-left'>Judul Kandidat</td>
-                <td className='p-5 text-left'>Kandidat Budi</td>
-                <td className='p-5 text-left'>Kode Kandidta</td>
-                <td className='p-5 text-left'>Mulai kandidat</td>
-                <td className='p-5 text-left'>Selesai Kandidat</td>
-                <td className='p-5 text-left'>
-                  <a href='#'>
-                    <LinkIcon className='w-4 h-4 hover:text-zinc-600' />
-                  </a>
-                  <a href='#'>
-                    <TrashIcon className='w-4 h-4 hover:text-zinc-600' />
-                  </a>
-                </td>
-              </tr>
+              {votes && votes.lenght > 0 ? (
+                votes.map((vote: votes, index: number) => (
+                  <tr>
+                    <td className='p-5 text-left'>{index}</td>
+                    <td className='p-5 text-left'>{vote.title}</td>
+                    <td className='p-5 text-left'>
+                      {vote.candidate.map((c: Candidate, index: number) => (
+                        <span key={index}>
+                          {c.name + 
+                            (
+                            index < vote.candidate.lenght -1 ? "vs" : ""
+                          )}
+                        </span>
+                      ))}
+                    </td>
+                    <td className='p-5 text-left'>{vote.code}</td>
+                    <td className='p-5 text-left'>{String(vote.startDateTime)}</td>
+                    <td className='p-5 text-left'>{String(vote.endDateTime)}</td>
+                    <td className='p-5 text-left'>
+                      <a href='#'>
+                        <LinkIcon className='w-4 h-4 hover:text-zinc-600' />
+                      </a>
+                      <a href='#'>
+                        <TrashIcon className='w-4 h-4 hover:text-zinc-600' />
+                      </a>
+                    </td>
+                  </tr>
+                ))
+              ) : "Belum ada vote yang dibuat"}
             </tbody>
           </table>
         </div>
