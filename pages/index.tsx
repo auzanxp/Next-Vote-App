@@ -5,9 +5,11 @@ import Button from '../components/Button'
 import Menu from '../components/Menu'
 import { LinkIcon, TrashIcon } from '@heroicons/react/24/solid'
 import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
 
 const Home: NextPage = () => {
   const router = useRouter()
+  const { data: session } = useSession();
 
   return (
     <div className='container mx-auto'>
@@ -39,40 +41,43 @@ const Home: NextPage = () => {
       {/* </Header> */}
 
       {/* <Table> */}
-      <div>
-        <p className='py-5 text-lg font-bold'>Vote yang saya buat</p>
-        <table className='table-auto w-full border border-zinc-100'>
-          <thead>
-            <tr className='border-b border-zinc-100'>
-              <th className='p-5 text-left'>No</th>
-              <th className='p-5 text-left'>Judul</th>
-              <th className='p-5 text-left'>Kandidat</th>
-              <th className='p-5 text-left'>Kode</th>
-              <th className='p-5 text-left'>Mulai</th>
-              <th className='p-5 text-left'>Selesai</th>
-              <th className='p-5 text-left'></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className='p-5 text-left'>1</td>
-              <td className='p-5 text-left'>Judul Kandidat</td>
-              <td className='p-5 text-left'>Kandidat Budi</td>
-              <td className='p-5 text-left'>Kode Kandidta</td>
-              <td className='p-5 text-left'>Mulai kandidat</td>
-              <td className='p-5 text-left'>Selesai Kandidat</td>
-              <td className='p-5 text-left'>
-                <a href='#'>
-                  <LinkIcon className='w-4 h-4 hover:text-zinc-600' />
-                </a>
-                <a href='#'>
-                  <TrashIcon className='w-4 h-4 hover:text-zinc-600' />
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      {session && (
+        <div>
+          <p className='py-5 text-lg font-bold'>Vote yang saya buat</p>
+          <table className='table-auto w-full border border-zinc-100'>
+            <thead>
+              <tr className='border-b border-zinc-100'>
+                <th className='p-5 text-left'>No</th>
+                <th className='p-5 text-left'>Judul</th>
+                <th className='p-5 text-left'>Kandidat</th>
+                <th className='p-5 text-left'>Kode</th>
+                <th className='p-5 text-left'>Mulai</th>
+                <th className='p-5 text-left'>Selesai</th>
+                <th className='p-5 text-left'></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className='p-5 text-left'>1</td>
+                <td className='p-5 text-left'>Judul Kandidat</td>
+                <td className='p-5 text-left'>Kandidat Budi</td>
+                <td className='p-5 text-left'>Kode Kandidta</td>
+                <td className='p-5 text-left'>Mulai kandidat</td>
+                <td className='p-5 text-left'>Selesai Kandidat</td>
+                <td className='p-5 text-left'>
+                  <a href='#'>
+                    <LinkIcon className='w-4 h-4 hover:text-zinc-600' />
+                  </a>
+                  <a href='#'>
+                    <TrashIcon className='w-4 h-4 hover:text-zinc-600' />
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )}
+
       {/* </Table> */}
     </div>
   )
