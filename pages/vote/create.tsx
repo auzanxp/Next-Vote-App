@@ -131,7 +131,7 @@ export default function CreateVote() {
                 <h1 className="text-4xl font-bold">Buat Vote Baru</h1>
                 <h2 className="text-zinc-700 mt-3">Silahkan masukkan data yang dibutuhkan sebelum membuat  vote online</h2>
 
-                <form className="flex flex-col">
+                <form className="flex flex-col" onSubmit={handleSubmitVote}>
                     {/* < Detail vote & DatePick> */}
                     <div className="space-y-5">
                         <h3 className="font-medium text-xl mt-10">Detail Voting</h3>
@@ -192,7 +192,7 @@ export default function CreateVote() {
                     {/* </kandidat> */}
 
                     <div className="self-end mt-10">
-                        <Button text="Buat Voting" onClick={handleSubmitVote} />
+                        <Button text="Buat Voting" isLoading={loading} />
                     </div>
                 </form>
 
