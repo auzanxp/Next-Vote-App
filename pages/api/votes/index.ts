@@ -28,6 +28,22 @@ export default async function handle(
 
     return res.json(result);
   }
+    //Get all by User
+    if (req.method === "GET") {
+      const result = await prisma.votes.findMany({
+        where: {
+          AND: [
+            { deleteAt: null },
+            {publisher: session?.user?.email!}
+          ]
+        }
+      })
+      const response = {
+        status: 200,
+        data: result
+      }
+      return res.json(response)
+    }
 
   return res.status(200).json({ data: "Hello World" });
 }
