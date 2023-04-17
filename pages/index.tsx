@@ -70,8 +70,8 @@ const Home: NextPage = () => {
             <tbody>
               {votes && votes.lenght > 0 ? (
                 votes.map((vote: votes, index: number) => (
-                  <tr>
-                    <td className='p-5 text-left'>{index}</td>
+                  <tr key={index}>
+                    <td className='p-5 text-left'>{index + 1 }</td>
                     <td className='p-5 text-left'>{vote.title}</td>
                     <td className='p-5 text-left'>
                       {vote.candidate.map((c: Candidate, index: number) => (
