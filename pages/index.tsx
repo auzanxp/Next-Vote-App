@@ -18,7 +18,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (dataVotesApi) {
-      setVotes(dataVotesApi)
+      setVotes(dataVotesApi.data)
     }
   }, [dataVotesApi])
 
