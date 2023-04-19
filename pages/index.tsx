@@ -68,18 +68,18 @@ const Home: NextPage = () => {
               </tr>
             </thead>
             <tbody>
-              {votes && votes.lenght > 0 ? (
-                votes.map((vote: votes, index: number) => (
+              {votes && votes.lenght > 0 ?
+                (votes.map((vote: votes, index: number) => (
                   <tr key={index}>
-                    <td className='p-5 text-left'>{index + 1 }</td>
+                    <td className='p-5 text-left'>{index + 1}</td>
                     <td className='p-5 text-left'>{vote.title}</td>
                     <td className='p-5 text-left'>
                       {vote.candidate.map((c: Candidate, index: number) => (
                         <span key={index}>
-                          {c.name + 
+                          {c.name +
                             (
-                            index < vote.candidate.lenght -1 ? "vs" : ""
-                          )}
+                              index < vote.candidate.lenght - 1 ? "vs" : ""
+                            )}
                         </span>
                       ))}
                     </td>
@@ -96,7 +96,7 @@ const Home: NextPage = () => {
                     </td>
                   </tr>
                 ))
-              ) : "Belum ada vote yang dibuat"}
+                ) : "Belum ada vote yang dibuat"}
             </tbody>
           </table>
         </div>
