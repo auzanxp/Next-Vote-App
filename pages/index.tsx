@@ -54,7 +54,7 @@ const Home: NextPage = () => {
 
       {/* <Table> */}
       {session && (
-        <div>
+        <div className='mb-8'>
           <p className='py-5 text-lg font-bold'>Vote yang saya buat</p>
           <table className='table-auto w-full border border-zinc-100'>
             <thead>
@@ -85,8 +85,8 @@ const Home: NextPage = () => {
                       ))}
                     </td>
                     <td className='p-5 text-left font-bold'>{vote.code}</td>
-                    <td className='p-5 text-left'>{moment(vote.startDateTime).format('MMMM Do YYYY, h:mm:ss a')}</td>
-                    <td className='p-5 text-left'>{moment(vote.endDateTime).format('MMMM Do YYYY, h:mm:ss a')}</td>
+                    <td className='p-5 text-left'>{moment(vote.startDateTime).format('DD MMM YYYY hh:mm a')}</td>
+                    <td className='p-5 text-left'>{moment(vote.endDateTime).format('DD MMM YYYY hh:mm a')}</td>
                     <td className='p-5 text-left'>
                       <a href='#'>
                         <LinkIcon className='w-4 h-4 hover:text-zinc-600' />
