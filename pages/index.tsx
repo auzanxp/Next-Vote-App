@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import useVotes from '../lib/useVotes'
 import { useEffect, useState } from 'react'
+import moment from 'moment'
 
 const Home: NextPage = () => {
   const router = useRouter()
@@ -84,8 +85,8 @@ const Home: NextPage = () => {
                       ))}
                     </td>
                     <td className='p-5 text-left font-bold'>{vote.code}</td>
-                    <td className='p-5 text-left'>{String(vote.startDateTime)}</td>
-                    <td className='p-5 text-left'>{String(vote.endDateTime)}</td>
+                    <td className='p-5 text-left'>{moment(vote.startDateTime).format('MMMM Do YYYY, h:mm:ss a')}</td>
+                    <td className='p-5 text-left'>{moment(vote.endDateTime).format('MMMM Do YYYY, h:mm:ss a')}</td>
                     <td className='p-5 text-left'>
                       <a href='#'>
                         <LinkIcon className='w-4 h-4 hover:text-zinc-600' />
