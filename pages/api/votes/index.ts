@@ -38,7 +38,7 @@ export default async function handle(
           ]
         }
       })
-      const response: Response<votes[]> = {
+      const response: Res<votes[]> = {
         status: 200,
         data: result
       }
