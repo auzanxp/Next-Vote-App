@@ -83,7 +83,7 @@ const Home: NextPage = () => {
                         </span>
                       ))}
                     </td>
-                    <td className='p-5 text-left'>{vote.code}</td>
+                    <td className='p-5 text-left font-bold'>{vote.code}</td>
                     <td className='p-5 text-left'>{String(vote.startDateTime)}</td>
                     <td className='p-5 text-left'>{String(vote.endDateTime)}</td>
                     <td className='p-5 text-left'>
